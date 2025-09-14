@@ -8,7 +8,7 @@ const CreatePollForm = () => {
   const value = useContext(ToggleContext);
   
   return value?.toggle === true ? (
-    <div>
+    <div className="">
       <PollForm />
     </div>
   ) : null;
