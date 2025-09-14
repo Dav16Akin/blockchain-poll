@@ -5,12 +5,12 @@ import React from "react";
 const PollCard = ({question, image, votes, voted} : PollType) => {
   const numberOfVotes = votes.reduce((acc, curr) => (acc += curr));
   return (
-    <div className="space-y-3.5 w-full flex flex-col">
+    <div className="space-y-3.5 w-full flex flex-col border rounded-sm overflow-hidden">
       <div className="bg-gray-200 w-full">
-        <Image src={image ?? null} alt="image" width={500} height={500} className="object-cover h-[150px]"/>
+        <Image src={image ?? null} alt="image" width={500} height={500} className="object-cover h-[150px]" priority/>
       </div>
 
-      <div className="space-y-1.5">
+      <div className="space-y-1.5 p-4">
         <p className="truncate font-semibold text-left">{question}</p>
         <div className="flex justify-between">
           <small>Votes : {numberOfVotes}</small>

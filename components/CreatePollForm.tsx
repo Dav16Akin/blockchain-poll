@@ -1,7 +1,7 @@
 "use client"
 
 import React, { useContext } from "react";
-import { PollForm } from "./forms/poll-form";
+import { PollForm } from "./forms/create-poll-form";
 import { ToggleContext } from "@/app/toggle-povider";
 
 const CreatePollForm = () => {

@@ -15,7 +15,7 @@ const Topbar = () => {
   }
 
   return (
-    <div className="flex justify-between items-center py-4 px-8 border">
+    <div className="flex justify-between items-center py-4 px-8 border-b">
       <div className="flex items-center">
         <h1>Blockchain Polls</h1>
       </div>
