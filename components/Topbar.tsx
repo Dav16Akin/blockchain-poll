@@ -5,10 +5,10 @@ import { Button } from "./ui/button";
 import { ToggleContext } from "@/app/toggle-povider";
 
 const Topbar = () => {
-  const ctx = useContext(ToggleContext);
+  const tctx = useContext(ToggleContext);
 
-  const toggle = ctx?.toggle ?? false;
-  const setToggle = ctx?.setToggle ?? (() => {});
+  const toggle = tctx?.toggle ?? false;
+  const setToggle = tctx?.setToggle ?? (() => {});
 
   const handleClick = () => {
     setToggle(!toggle)

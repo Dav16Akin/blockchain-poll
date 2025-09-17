@@ -3,4 +3,5 @@ export type PollType = {
   image: string;
   votes: number[];
   voted: boolean;
+  id?: number;
 };

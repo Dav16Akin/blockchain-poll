@@ -3,7 +3,7 @@ import { Geist, Geist_Mono } from "next/font/google";
 import "./globals.css";
 import Topbar from "../components/Topbar";
 import { ToggleProvider } from "./toggle-povider";
-
+import { SelectedProvider } from "./selected-poll-provider";
 
 const geistSans = Geist({
   variable: "--font-geist-sans",
@@ -32,7 +32,7 @@ export default function RootLayout({
       >
         <ToggleProvider>
           <Topbar />
-          {children}
+          <SelectedProvider>{children}</SelectedProvider>
         </ToggleProvider>
       </body>
     </html>
