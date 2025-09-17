@@ -1,10 +1,10 @@
-"use client"
+"use client";
 
-import { zodResolver } from "@hookform/resolvers/zod"
-import { useForm } from "react-hook-form"
-import { z } from "zod"
+import { zodResolver } from "@hookform/resolvers/zod";
+import { useForm } from "react-hook-form";
+import { z } from "zod";
 
-import { Button } from "@/components/ui/button"
+import { Button } from "@/components/ui/button";
 import {
   Form,
   FormControl,
@@ -12,29 +12,33 @@ import {
   FormItem,
   FormLabel,
   FormMessage,
-} from "@/components/ui/form"
-import {
-  RadioGroup,
-  RadioGroupItem,
-} from "@/components/ui/radio-group"
+} from "@/components/ui/form";
+import { RadioGroup, RadioGroupItem } from "@/components/ui/radio-group";
+import { vote } from "@/lib/actions/poll-service.action";
 
 type PollVoteFormProps = {
-  title: string
-  options: string[]
-}
+  id: number;
+  title: string;
+  options: string[];
+};
 
 const FormSchema = z.object({
   option: z.string().min(1, "Please select an option"),
-})
+});
 
-export function PollVoteForm({ title, options }: PollVoteFormProps) {
+export function PollVoteForm({ title, options, id }: PollVoteFormProps) {
   const form = useForm<z.infer<typeof FormSchema>>({
     resolver: zodResolver(FormSchema),
-  })
+  });
 
-  function onSubmit(data: z.infer<typeof FormSchema>) {
-    console.log("Selected option:", data.option)
-    // send vote to API here
+  async function onSubmit(data: z.infer<typeof FormSchema>) {
+    //"Selected option:", data.option
+    try {
+      const voteResult = await vote(id, Number(data.option));
+      console.log(voteResult);
+    } catch (error) {
+      console.error("Unable to vote: ", error);
+    }
   }
 
   return (
@@ -53,10 +57,7 @@ export function PollVoteForm({ title, options }: PollVoteFormProps) {
                   className="flex flex-col"
                 >
                   {options.map((opt, i) => (
-                    <FormItem
-                      key={i}
-                      className="flex items-center gap-3"
-                    >
+                    <FormItem key={i} className="flex items-center gap-3">
                       <FormControl>
                         <RadioGroupItem value={String(i)} />
                       </FormControl>
@@ -69,9 +70,10 @@ export function PollVoteForm({ title, options }: PollVoteFormProps) {
             </FormItem>
           )}
         />
-        <Button disabled={!form.formState.isValid} type="submit">Submit</Button>
+        <Button disabled={!form.formState.isValid} type="submit">
+          Submit
+        </Button>
       </form>
     </Form>
-  )
+  );
 }
-

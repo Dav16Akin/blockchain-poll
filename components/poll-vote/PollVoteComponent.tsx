@@ -9,11 +9,10 @@ type PollComponentProps = {
   poll: PollType[];
 };
 
-
 const PollVoteComponent = ({ poll }: PollComponentProps) => {
-  const sctx = useContext(SelectedContext)
+  const sctx = useContext(SelectedContext);
 
-  const selected = sctx?.selected ?? null
+  const selected = sctx?.selected ?? null;
 
   const chartSettings: ApexCharts.ApexOptions = {
     series: [
@@ -35,28 +34,46 @@ const PollVoteComponent = ({ poll }: PollComponentProps) => {
       show: false,
     },
     xaxis: {
-      categories: ["Monday", "Tuesday", "Wednesday"],
+      categories: selected !== null ? poll[selected].options : [],
     },
   };
 
   useEffect(() => {
-    (async () => {
-      const ApexChartsModule = (await import("apexcharts")).default;
-      const chart = new ApexChartsModule(
-        document.querySelector("#poll-results"),
-        chartSettings
-      );
-      chart.render();
-    })();
-  }, [selected]);
+    let chart: any;
 
-  const options = ["Monday", "Tuesday", "Wednesday"];
+    if (selected !== null && poll[selected].voted) {
+      (async () => {
+        const ApexCharts = (await import("apexcharts")).default;
+
+        const el = document.querySelector("#poll-results");
+        if (el) {
+          chart = new ApexCharts(el, chartSettings);
+          chart.render();
+        }
+      })();
+    }
+
+    // cleanup so chart is destroyed if poll changes
+    return () => {
+      if (chart) {
+        chart.destroy();
+      }
+    };
+  }, [selected, poll]);
 
   return (
     <div>
-      {selected !== null && poll[selected].voted === false && (<PollVoteForm title={selected !== null ? poll[selected].question : ""} options={options} />)}
+      {selected !== null && poll[selected].voted === false && (
+        <PollVoteForm
+          title={selected !== null ? poll[selected].question : ""}
+          options={poll[selected].options}
+          id={poll[selected].id}
+        />
+      )}
 
-      {selected !== null && poll[selected].voted && <div id="poll-results" className="poll-results"></div>}
+      {selected !== null && poll[selected].voted && (
+        <div id="poll-results" className="poll-results"></div>
+      )}
     </div>
   );
 };

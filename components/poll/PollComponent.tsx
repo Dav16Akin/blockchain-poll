@@ -13,6 +13,7 @@ const PollComponent = ({ poll }: PollComponentProps) => {
         return (
           <PollCard
             key={idx}
+            options={info.options}
             id={idx}
             question={info.question}
             image={info.image}

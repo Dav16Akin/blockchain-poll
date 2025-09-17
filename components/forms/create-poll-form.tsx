@@ -14,6 +14,7 @@ import {
   FormMessage,
 } from "@/components/ui/form";
 import { Input } from "@/components/ui/input";
+import { createPoll } from "@/lib/actions/poll-service.action";
 
 const formSchema = z.object({
   question: z.string(),
@@ -35,22 +36,31 @@ export const PollForm = () => {
     },
   });
 
-  function onSubmit(values: z.infer<typeof formSchema>) {
-    console.log(values);
+  async function onSubmit(values: z.infer<typeof formSchema>) {
+    const { question, image, opt1, opt2, opt3 } = values;
+    try {
+      const result = await createPoll(question, image, [opt1, opt2, opt3]);
+      console.log(result);
+
+      form.reset()
+    } catch (error) {
+      console.error("Unale tp create new poll:", error);
+    }
   }
+
+  
   return (
     <div className="flex flex-col items-center">
       <Form {...form}>
         <form onSubmit={form.handleSubmit(onSubmit)} className="space-y-2 w-96">
           <FormField
             control={form.control}
-
             name="question"
             render={({ field }) => (
               <FormItem>
                 <FormLabel>Question</FormLabel>
                 <FormControl>
-                  <Input placeholder="" {...field}/>
+                  <Input placeholder="" {...field} />
                 </FormControl>
                 <FormMessage />
               </FormItem>
